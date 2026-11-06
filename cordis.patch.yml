@@ -1,0 +1,21 @@
+# dsh-workspace-download bundle patch
+#
+# The profile boot merges this patch (a single `insert` of the host plugin
+# row): the streaming download routes /api/download and /api/download.zip
+# become available on the web server, and the client half declared through
+# `dsh.client` in package.json contributes the sidebar download controls.
+- insert:
+    - id: workspace-download
+      name: dsh-workspace-download
+#
+# 可选配置（不写就走默认：允许根 = 工作区注册表里的每个工作区）：
+#
+#   - insert:
+#       - id: workspace-download
+#         name: dsh-workspace-download
+#         config:
+#           allowedRoots:                       # 显式覆盖允许根（绝对路径）
+#             - /home/dev/workspace
+#           # allowOutsideWorkspace: true       # 关闭围栏（不建议）
+#
+# 围栏判定在 realpath 之后进行，工作区内的符号链接无法逃逸；越界返回 403。
